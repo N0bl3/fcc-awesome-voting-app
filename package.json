@@ -1,0 +1,54 @@
+{
+  "name": "fcc-awesome-voting-app",
+  "version": "0.0.0",
+  "description": "An awesome voting app made for FCC Back End Certificate",
+  "homepage": "",
+  "author": {
+    "name": "N0bl3"
+  },
+  "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "debug": "^2.2.0",
+    "express": "^4.14.0",
+    "fs-extra": "^0.30.0",
+    "pug": "^2.0.0-beta3",
+    "request": "^2.72.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "latest",
+    "babel-cli": "^6.10.1",
+    "babel-core": "^6.3.26",
+    "babel-eslint": "^6.1.0",
+    "babel-preset-es2015": "^6.9.0",
+    "chai": "latest",
+    "eslint": "^2.13.1",
+    "eslint-config-defaults": "^9.0.0",
+    "eslint-plugin-filenames": "^1.0.0",
+    "jsonlint": "^1.6.2",
+    "mocha": "latest",
+    "postcss-cli": "^2.5.2",
+    "uglify-js": "^2.7.0"
+  },
+  "repository": "https://github.com/N0bl3/fcc-awesome-voting-app.git",
+  "scripts": {
+    "prebuild": "npm run test",
+    "build": "node utils/init.js && npm run build:css && npm run build:jade && npm run build:js",
+    "build:css": "postcss --use autoprefixer public/css/*.css -d dist/public/css",
+    "build:jade": "node utils/build-jade.js",
+    "build:js": "npm run compile:server && npm run compile:client && npm run uglify",
+    "compile:server": "babel server.js -o dist/server.js && babel routes/ -d dist/routes",
+    "compile:client": "babel public/js -d dist/public/js",
+    "lint": "npm run lint:js && npm run lint:json",
+    "lint:js": "eslint */**.js",
+    "lint:json": "jsonlint -q package.json",
+    "start": "set DEBUG=server NODE_ENV=development && node server.js",
+    "start:prod": "set NODE_ENV=production && node dist/server.js",
+    "prepublish": "npm run build",
+    "pretest": "npm run lint",
+    "test": "mocha tests/",
+    "uglify": "uglifyjs dist/public/js/index.js -o dist/public/js/index.js -c -m -r '$,require,exports'"
+  },
+  "license": "BSD-2-Clause-FreeBSD"
+}

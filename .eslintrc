@@ -1,0 +1,14 @@
+{
+  "extends": "defaults/configurations/eslint",
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "plugins": [
+    "filenames"
+  ],
+  "rules": {
+    "filenames/filenames": 0
+  }
+}
