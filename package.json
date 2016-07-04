@@ -1,6 +1,6 @@
 {
   "name": "fcc-awesome-voting-app",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "An awesome voting app made for FCC Back End Certificate",
   "homepage": "",
   "author": {
@@ -13,9 +13,9 @@
     "debug": "^2.2.0",
     "express": "^4.14.0",
     "fs-extra": "^0.30.0",
+    "mongodb": "^2.1.18",
     "passport": "^0.3.2",
     "pug": "^2.0.0-beta3",
-    "redis": "^2.6.2",
     "request": "^2.72.0"
   },
   "devDependencies": {
@@ -30,6 +30,7 @@
     "eslint-plugin-import": "^1.10.1",
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
+    "istanbul": "^0.4.4",
     "jsonlint": "^1.6.2",
     "mocha": "latest",
     "postcss-cli": "^2.5.2",
@@ -47,11 +48,12 @@
     "lint": "npm run lint:js && npm run lint:json",
     "lint:js": "eslint */**.js",
     "lint:json": "jsonlint -q package.json",
-    "start": "set DEBUG=server NODE_ENV=development && node server.js",
-    "start:prod": "set NODE_ENV=production && node dist/server.js",
+    "start": "set DEBUG=* NODE_ENV=development && node server.js",
+    "start:prod": "set DEBUG=server NODE_ENV=production && node dist/server.js",
     "prepublish": "npm run build",
     "pretest": "npm run lint",
-    "test": "mocha tests/",
+    "test": "mocha test",
+    "posttest": "istanbul cover --hook-run-in-context node_modules/mocha/bin/_mocha -- -R spec",
     "uglify": "uglifyjs dist/public/js/index.js -o dist/public/js/index.js -c -m -r '$,require,exports'"
   },
   "license": "BSD-2-Clause-FreeBSD"
