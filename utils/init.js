@@ -1,4 +1,4 @@
-var fs = require('fs-extra');
+const fs = require('fs-extra');
 fs.emptyDir('dist');
 fs.ensureDir('dist/public/js');
 fs.ensureDir('dist/public/css');

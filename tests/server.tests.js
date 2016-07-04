@@ -1,4 +1,4 @@
 /* eslint-disable no-unused-vars */
-let mocha = require('mocha');
-let chai = require('chai');
+const mocha = require('mocha');
+const chai = require('chai');
 /* eslint-enable no-unused-vars */
