@@ -2,6 +2,9 @@ exports.index = (req, res) => {
   res.render('index');
 };
 //  Authenticate
+exports.getLoginPage = (req, res) => {
+  res.render('login');
+};
 
 exports.authenticate = (req, res) => {
   res.sendStatus(501);

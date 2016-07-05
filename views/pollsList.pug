@@ -1,0 +1,15 @@
+extends ./layout.pug
+
+block content
+    div.row
+        div.col.s12
+            ul.collection.with-header
+                li.collection-header
+                    h5.center-align Your Polls
+                if user.polls
+                    each poll in user.polls
+                        li.collection-item
+                            a.center-align(href=poll.url) #{poll.name}
+
+append scripts
+    script(src="js/pollsList.js")
