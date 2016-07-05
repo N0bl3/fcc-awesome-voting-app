@@ -1,11 +1,7 @@
 exports.index = (req, res) => {
-  res.render('index');
+  res.render('index', { message: req.flash('message') });
 };
 //  Authenticate
-
-exports.authenticate = (req, res) => {
-  res.sendStatus(501);
-};
 
 //  Create
 exports.createPoll = (req, res) => {
