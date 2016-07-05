@@ -7,6 +7,7 @@ const debugServer = require('debug')('server');
 const debugDB = require('debug')('database');
 const express = require('express');
 const expressSession = require('express-session');
+const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const path = require('path');
 const passport = require('passport');
@@ -25,7 +26,13 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 app.use(cookieParser());
-app.use(expressSession());
+app.use(flash());
+app.use(expressSession({
+  secret: 'meow',
+  name: 'fcc-awesome-voting',
+  resave: true,
+  saveUninitialized: false,
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -35,10 +42,14 @@ const User = mongoose.model('User', {
   username: String,
   password: String,
   email: String,
-  gender: String,
-  address: String,
 });
 
+function isAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.redirect('/');
+}
 function isValidPassword(user, password) {
   return bcrypt.compareSync(password, user.password);
 }
@@ -73,8 +84,8 @@ passport.use('login', new LocalStrategy({ passReqToCallback: true },
     );
   }));
 
-passport.use('signup', new LocalStrategy({ passReqToCallback: true },
-  (req, username, password, done) => {
+passport.use('register', new LocalStrategy({ passReqToCallback: true },
+  (req, username, password, email, done) => {
     function findOrCreateUser() {
       // find a user in Mongo with provided username
       User.findOne({ username }, (err, user) => {
@@ -95,12 +106,10 @@ passport.use('signup', new LocalStrategy({ passReqToCallback: true },
           // set the user's local credentials
           newUser.username = username;
           newUser.password = createHash(password);
-          newUser.email = req.param('email');
-          newUser.firstName = req.param('firstName');
-          newUser.lastName = req.param('lastName');
+          newUser.email = email;
 
           // save the user
-          newUser.save((err) => {
+          return newUser.save((err) => {
             if (err) {
               console.log(`Error in Saving user: ${err}`);
               throw err;
@@ -110,7 +119,7 @@ passport.use('signup', new LocalStrategy({ passReqToCallback: true },
           });
         }
       });
-    };
+    }
 
     // Delay the execution of findOrCreateUser and execute
     // the method in the next tick of the event loop
@@ -120,9 +129,20 @@ passport.use('signup', new LocalStrategy({ passReqToCallback: true },
 
 app.get('/', routes.index);
 
+app.get('/login', routes.getLoginPage);
+
 app.post('/login', passport.authenticate('login', {
   successRedirect: '/',
   failureRedirect: '/login',
+  failureFlash: true,
+}));
+
+app.get('/register', routes.getRegisterPage);
+
+app.post('/register', passport.authenticate('register', {
+  successRedirect: '/',
+  failureRedirect: '/register',
+  failureFlash: true,
 }));
 
 app.get('/logout', (req, res) => {
@@ -131,20 +151,20 @@ app.get('/logout', (req, res) => {
 });
 
 // Create
-app.post('/poll/:pollID', routes.createPoll);
-app.post('/poll/:pollID/option/:option', routes.createPollOption);
+app.post('/poll/:pollID', isAuthenticated(), routes.createPoll);
+app.post('/poll/:pollID/option/:option', isAuthenticated(), routes.createPollOption);
 
 //  Read
 app.get('/poll/:pollID', routes.getPoll);
-app.get('/user/:userID/polls', routes.listUserPolls);
+app.get('/user/:userID/polls', isAuthenticated(), routes.listUserPolls);
 
 //  Update
-app.get('/poll/:pollID', routes.sharePoll);
+app.get('/poll/:pollID/share', routes.sharePoll);
 app.get('/poll/:pollID/vote/:vote', routes.votePoll);
 
 // Delete
-app.delete('/poll/:pollID', routes.deletePoll);
-app.delete('/poll/:pollID/option/:option', routes.deletePollOption);
+app.delete('/poll/:pollID', isAuthenticated(), routes.deletePoll);
+app.delete('/poll/:pollID/option/:option', isAuthenticated(), routes.deletePollOption);
 
 // Server operations
 app.listen(app.get('port'), () => {

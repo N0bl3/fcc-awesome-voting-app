@@ -2,13 +2,16 @@ exports.index = (req, res) => {
   res.render('index', { message: req.flash('message') });
 };
 //  Authenticate
+exports.getLoginPage = (req, res) => {
+  res.render('login');
+};
 
 exports.authenticate = (req, res) => {
   res.sendStatus(501);
 };
 
 exports.getRegisterPage = (req, res) => {
-  res.sendStatus(501);
+  res.render('register');
 };
 
 exports.register = (req, res) => {
