@@ -1,0 +1,23 @@
+extends ./layout.pug
+
+block content
+    div.row
+        form#register-form.col.s12
+            div.row
+                div.col.s12.input-field
+                    input#username(name="username" type="text" placeholder="Username")
+                    label(for="username") Username
+            div.row
+                div.col.s12.input-field
+                    input#email(name="email" type="email" placeholder="email@email.com")
+                    label(for="email") E-mail
+            div.row
+                div.col.s12.input-field
+                    input#password(name="password" type="password" placeholder="Password")
+                    label(for="password") Password
+            div.row
+                div.col.s12.input-field
+                    button.btn-large.waves-effect.waves-light(type="submit") Register
+
+append scripts
+    script(src="js/register.js")

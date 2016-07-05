@@ -1,3 +1,24 @@
-body {
+.header, .footer {
+    color: #FFF
+}
 
+.header {
+    min-height: 80px;
+    background-color: #107070;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #107070;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+a {
+    color: #FFF;
+    text-decoration: none;
 }

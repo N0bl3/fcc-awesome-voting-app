@@ -3,6 +3,17 @@ exports.index = (req, res) => {
 };
 //  Authenticate
 
+exports.authenticate = (req, res) => {
+  res.sendStatus(501);
+};
+
+exports.getRegisterPage = (req, res) => {
+  res.sendStatus(501);
+};
+
+exports.register = (req, res) => {
+  res.sendStatus(501);
+};
 //  Create
 exports.createPoll = (req, res) => {
   res.sendStatus(501);
