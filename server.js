@@ -27,6 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', routes.index);
 app.get('/login', routes.getLoginPage);
 app.post('/login', routes.authenticate);
+app.get('/register', routes.getRegisterPage);
+app.post('/register', routes.register);
 
 // Create
 app.post('/poll/:pollID', routes.createPoll);
