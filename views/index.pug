@@ -1,10 +1,35 @@
-doctype html
-head
-    link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7", crossorigin="anonymous")
-body
-    div.container-fluid
-        div.col-xs-12
-            h1 Welcome to fcc awesome voting app
-            p Hello from the generator
-    script(src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous")
-    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js", integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS", crossorigin="anonymous")
+extends layout.pug
+
+block content
+    div.row
+        div.col.s12
+            h1.center-align Welcome #{user.username} !
+            if user
+                table.centered
+                    thead
+                        tr
+                            th Dashboard
+                    tbody
+                        each poll in user.polls
+                            tr
+                                td
+                                    a(href="/poll/#{poll.id}") #{poll.name}
+                        tr
+                            td Poll 1
+                        tr
+                            td Poll 2
+            else
+                h2.center-align Log In to make polls
+                p.center-align
+                    a(href="/login").waves-effect.waves-light.btn-large.login Log In
+                        i.material-icons.left settings_power
+                        i.material-icons.right settings_power
+                    br
+                    | or
+                    br
+                    a(href="/register").waves-effect.waves-light.btn-large.login Register
+                        i.material-icons.left settings_power
+                        i.material-icons.right settings_power
+
+append scripts
+    script(src="js/index.js")

@@ -1,0 +1,34 @@
+doctype html
+head
+    title VoteJS
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css")
+    link(rel="stylesheet" href="css/main.css")
+body
+    header.navbar-fixed
+        nav
+            div.nav-wrapper
+                a.brand-logo.center(href="") VoteJS
+                ul#nav-mobile.right
+                    if user
+                        li
+                            a.user(href="#") #{user.username}
+                        li
+                            a.logout(href="/logout") Log Out
+                    else
+                        li
+                            a.login(href="/login") Log In
+                        li
+                            a.register(href='/register') Register
+
+    main.container
+        block content
+    footer.page-footer
+        div.container
+            div.col.s12
+        div.footer-copyright
+            div.container N0bl3
+    block scripts
+        script(src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js")

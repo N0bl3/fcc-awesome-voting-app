@@ -2,11 +2,16 @@
 const async = require('async');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const debugServer = require('debug')('server');
-const debugDB = require('debug')('database');
+const debug = require('debug');
+const debugServer = debug('server');
+const debugDB = debug('database');
+const debugRoute = debug('route');
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
+const expressSession = require('express-session');
+const flash = require('connect-flash');
+const mongoose = require('mongoose');
 const path = require('path');
+const passport = require('passport');
 const request = require('request');
 const routes = require('./routes/all');
 /* eslint-enable no-unused-vars */
@@ -21,40 +26,72 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 app.use(cookieParser());
+app.use(flash());
+app.use(expressSession({
+  secret: 'meow', name: 'fcc-awesome-voting', resave: true, saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+function isLoggedIn(req,
+  res,
+  next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/');
+}
+
+require('./config/passport')(passport);
+
 app.get('/', routes.index);
 
-app.post('/login', routes.authenticate);
+app.get('/login', routes.getLoginPage);
+
+app.post('/login', passport.authenticate('login', {
+  successRedirect: '/', failureRedirect: '/login', failureFlash: true,
+}));
+
+app.get('/register', routes.getRegisterPage);
+
+app.post('/register', passport.authenticate('register', {
+  successRedirect: '/', failureRedirect: '/register', failureFlash: true,
+}));
+
+app.get('/logout', (req,
+  res) => {
+  debugRoute('Logging Out');
+  req.logout();
+  res.redirect('/');
+});
 
 // Create
-app.post('/poll/:pollID', routes.createPoll);
-app.post('/poll/:pollID/option/:option', routes.createPollOption);
+app.post('/poll/:pollID', isLoggedIn, routes.createPoll);
+app.post('/poll/:pollID/option/:option', isLoggedIn, routes.createPollOption);
 
 //  Read
 app.get('/poll/:pollID', routes.getPoll);
-app.get('/user/:userID/polls', routes.listUserPolls);
+app.get('/user/:userID/polls', isLoggedIn, routes.listUserPolls);
 
 //  Update
-app.get('/poll/:pollID', routes.sharePoll);
+app.get('/poll/:pollID/share', routes.sharePoll);
 app.get('/poll/:pollID/vote/:vote', routes.votePoll);
 
 // Delete
-app.delete('/poll/:pollID', routes.deletePoll);
-app.delete('/poll/:pollID/option/:option', routes.deletePollOption);
+app.delete('/poll/:pollID', isLoggedIn, routes.deletePoll);
+app.delete('/poll/:pollID/option/:option', isLoggedIn, routes.deletePollOption);
 
 // Server operations
 app.listen(app.get('port'), () => {
   debugServer(`App starting on port ${app.get('port')}`);
 });
-if (process.env.MONGO_URI) {
-  MongoClient.connect(process.env.MONGO_URI, (err, db) => {
-    if (err) {
-      debugDB(`Unable to connect to the mongoDB server. Error: ${err}`);
-    } else {
-      debugDB('Connection established to MongoDB');
-      db.close();
-    }
-  });
-}
+
+mongoose.connect(process.env.MONGODB_URI, (err) => {
+  if (err) {
+    debugDB(`Unable to connect to the mongoDB server. Error: ${err}`);
+  } else {
+    debugDB('Connection established to MongoDB');
+  }
+});
