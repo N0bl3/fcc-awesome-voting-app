@@ -3,22 +3,28 @@ extends layout.pug
 block content
     div.row
         div.col.s12
-            h1.center-align Welcome #{user.username} !
             if user
+                h1.center-align Welcome #{user.username} !
                 table.centered
                     thead
                         tr
                             th Dashboard
                     tbody
-                        each poll in user.polls
+                        if user.polls
+                            each poll in user.polls
+                                tr
+                                    td
+                                        a(href="/poll/#{poll.id}") #{poll.name}
+                        else
                             tr
                                 td
-                                    a(href="/poll/#{poll.id}") #{poll.name}
-                        tr
-                            td Poll 1
-                        tr
-                            td Poll 2
+                                    a#addPoll(href="#") Add poll
+                            tr
+                                td Poll 1
+                            tr
+                                td Poll 2
             else
+                h1.center-align Welcome !
                 h2.center-align Log In to make polls
                 p.center-align
                     a(href="/login").waves-effect.waves-light.btn-large.login Log In

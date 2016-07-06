@@ -1,3 +1,5 @@
+const Poll = require('../models/poll');
+
 exports.index = (req,
   res) => {
   res.render('index', {
@@ -31,7 +33,15 @@ exports.register = (req,
 //  Create
 exports.createPoll = (req,
   res) => {
-  res.sendStatus(501);
+  const poll = new Poll();
+  poll.name = 'New poll';
+  poll.choices = ['Blue', 'Pink'];
+  poll.votes = [50, 50];
+  poll.save((err,
+    poll) => {
+    if (err) { res.sendStatus(500); }
+    res.render('poll', poll);
+  });
 };
 
 exports.createPollOption = (req,

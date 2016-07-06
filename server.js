@@ -68,7 +68,7 @@ app.get('/logout', (req,
 });
 
 // Create
-app.post('/poll/:pollID', isLoggedIn, routes.createPoll);
+app.post('/poll', isLoggedIn, routes.createPoll);
 app.post('/poll/:pollID/option/:option', isLoggedIn, routes.createPollOption);
 
 //  Read
