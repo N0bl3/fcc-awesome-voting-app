@@ -1,0 +1,21 @@
+extends layout.pug
+
+block content
+    div.row
+        form#login-form.col.s12(method="post")
+            div.row
+                div.col.s12.input-field
+                    input#username(name="username" type="text" placeholder="Username")
+                    label(for="username") Username
+            div.row
+                div.col.s12.input-field
+                    input#password(name="password" type="password" placeholder="Password")
+                    label(for="password") Password
+            div.row
+                div.col.s12.input-field
+                    button.btn-large.waves-effect.waves-light(type="submit") Log In
+                    if message
+                        p #{message}
+
+append scripts
+    script(src="js/login.js")
