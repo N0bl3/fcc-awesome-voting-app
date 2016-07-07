@@ -44,7 +44,7 @@ exports.createPoll = (req,
   User.findOneAndUpdate(query, { $push: { polls: poll } }, { new: true }, (err,
     user) => {
     if (err) { res.sendStatus(500); } else if (!user) { res.sendStatus(404); } else {
-      res.render('poll', { user: req.user, poll: user.polls.id(pollID) });
+      res.status(201).end(String(user.polls.id(pollID)._id));
     }
   });
 };
