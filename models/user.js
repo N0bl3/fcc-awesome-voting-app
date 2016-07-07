@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Poll = require('./poll').schema;
 
 const userSchema = mongoose.Schema({
-  username: String, password: String,
+  username: String, password: String, polls: [Poll], hello: String,
 });
 
 userSchema.methods.generateHash =

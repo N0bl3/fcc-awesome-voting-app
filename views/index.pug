@@ -5,20 +5,21 @@ block content
         div.col.s12
             if user
                 h1.center-align Welcome #{user.username} !
-                table.centered
+                table.centered.highlight
                     thead
                         tr
                             th Dashboard
                     tbody
-                        if user.polls
+                        tr
+                            td
+                                a#addPoll(href="#") Add poll
+                        if user.polls.length
                             each poll in user.polls
                                 tr
                                     td
-                                        a(href="/poll/#{poll.id}") #{poll.name}
+                                        - var pollURL = '/poll/' + poll._id;
+                                        a(href=pollURL) #{poll.name}
                         else
-                            tr
-                                td
-                                    a#addPoll(href="#") Add poll
                             tr
                                 td Poll 1
                             tr

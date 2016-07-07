@@ -9,11 +9,11 @@ body
     header.navbar-fixed
         nav
             div.nav-wrapper
-                a.brand-logo.center(href="") VoteJS
+                a.brand-logo.center(href="/") VoteJS
                 ul#nav-mobile.right
                     if user
                         li
-                            a.user(href="#") #{user.username}
+                            a.user(href="/") #{user.username}
                         li
                             a.logout(href="/logout") Log Out
                     else

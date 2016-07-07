@@ -3,7 +3,7 @@ extends layout.pug
 block content
     div.row
         div.col.s12
-            p Poll: #{poll}
+            p Poll: #{poll.name} #{poll.choices} #{poll.votes}
 
 append scripts
     script(src="js/poll.js")
