@@ -68,12 +68,11 @@ app.get('/logout', (req,
 });
 
 // Create
-app.post('/poll/:pollID', isLoggedIn, routes.createPoll);
+app.post('/poll', isLoggedIn, routes.createPoll);
 app.post('/poll/:pollID/option/:option', isLoggedIn, routes.createPollOption);
 
 //  Read
 app.get('/poll/:pollID', routes.getPoll);
-app.get('/user/:userID/polls', isLoggedIn, routes.listUserPolls);
 
 //  Update
 app.get('/poll/:pollID/share', routes.sharePoll);

@@ -1,6 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 
 const User = require('../models/user');
+const Poll = require('../models/poll');
 
 module.exports = function (passport) {
   // used to serialize the user for the session
@@ -50,7 +51,6 @@ module.exports = function (passport) {
     username,
     password,
     done) => {
-    console.log(username, password);
     process.nextTick(() => {
       User.findOne({ username }, (err,
         user) => {
@@ -65,9 +65,17 @@ module.exports = function (passport) {
         newUser.username = username;
         newUser.password = newUser.generateHash(password);
 
+        const poll = new Poll.model();
+        poll.name = 'New poll';
+        poll.choices = ['Black', 'White'];
+        poll.votes = [50, 50];
+
+        newUser.polls.push(poll);
+
         newUser.save((err,
           user) => {
           if (err) {
+            console.log(err);
             throw err;
           }
           console.log(user);

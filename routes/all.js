@@ -1,3 +1,6 @@
+const User = require('../models/user');
+const Poll = require('../models/poll').model;
+
 exports.index = (req,
   res) => {
   res.render('index', {
@@ -31,7 +34,19 @@ exports.register = (req,
 //  Create
 exports.createPoll = (req,
   res) => {
-  res.sendStatus(501);
+  const query = { username: req.user.username };
+  const poll = new Poll();
+  const pollID = poll._id;
+  poll.name = 'New poll';
+  poll.choices = ['Blue', 'Pink'];
+  poll.votes = [50, 50];
+
+  User.findOneAndUpdate(query, { $push: { polls: poll } }, { new: true }, (err,
+    user) => {
+    if (err) { res.sendStatus(500); } else if (!user) { res.sendStatus(404); } else {
+      res.render('poll', { poll: user.polls.id(pollID) });
+    }
+  });
 };
 
 exports.createPollOption = (req,
@@ -42,12 +57,15 @@ exports.createPollOption = (req,
 //  Read
 exports.getPoll = (req,
   res) => {
-  res.sendStatus(501);
-};
-
-exports.listUserPolls = (req,
-  res) => {
-  res.render('pollsList');
+  const pollID = req.params.pollID;
+  User.findOne({
+    'polls._id': pollID,
+  }, (err,
+    user) => {
+    if (err) { res.sendStatus(500); } else if (!user) { res.sendStatus(404); } else {
+      res.render('poll', { user: req.user, poll: user.polls.id(pollID) });
+    }
+  });
 };
 
 //  Update
