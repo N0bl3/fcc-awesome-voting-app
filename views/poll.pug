@@ -4,6 +4,8 @@ block content
     div.row
         div.col.s12
             p Poll: #{poll.name} #{poll.choices} #{poll.votes}
+                a#delete-poll(href='#') Delete
 
 append scripts
-    script(src="js/poll.js")
+    script(type="text/javascript") var pollID = "#{poll._id}";
+    script(src="../js/poll.js")
