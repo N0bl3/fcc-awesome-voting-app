@@ -18,7 +18,7 @@ block content
                                 tr
                                     td
                                         - var pollURL = '/poll/' + poll._id;
-                                        i.delete-poll.material-icons delete
+                                        i.delete-poll.material-icons(data-url=pollURL) delete
                                         a.poll(href=pollURL) #{poll.name}
             else
                 h1.center-align Welcome !
