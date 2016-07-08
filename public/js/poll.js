@@ -7,4 +7,30 @@ $(document).ready(() => {
       },
     });
   });
+  $('#poll-form').submit((e) => {
+    e.preventDefault();
+    const data = $('#poll-form').serialize();
+    /**
+     * TODO Implement validation
+     * @type {*|boolean}
+     */
+/*    let isValid = data.map((elem) => {
+      switch (elem.name) {
+        case 'name':
+        case 'first-choice':
+        case 'second-choice':
+          return /^[\d\w]+$/.test(elem.value);
+        default:
+          return false;
+      }
+    }).every((elem) => elem === true);*/
+    const isValid = true;
+    if (isValid) {
+      $.ajax({
+        url: `/poll/${pollID}?${data}`, method: 'PUT', success() {
+          window.location.reload();
+        },
+      });
+    }
+  });
 });

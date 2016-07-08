@@ -69,6 +69,30 @@ exports.getPoll = (req,
 };
 
 //  Update
+exports.updatePoll = (req,
+  res) => {
+  const pollID = req.params.pollID;
+
+  User.findOne({ 'polls._id': pollID }, (err,
+    user) => {
+    if (err) { res.sendStatus(500); } else {
+      const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
+      const target = user.polls[pollIndex];
+
+      target.name = req.query.name;
+      target.choices = [req.query['first-choice'], req.query['second-choice']];
+
+      user.save((err,
+        user) => {
+        if (err) { res.sendStatus(500); } else {
+          console.log(user.polls[pollIndex]);
+          res.sendStatus(200);
+        }
+      });
+    }
+  });
+};
+
 exports.sharePoll = (req,
   res) => {
   res.sendStatus(501);
