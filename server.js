@@ -75,8 +75,9 @@ app.post('/poll/:pollID/option/:option', isLoggedIn, routes.createPollOption);
 app.get('/poll/:pollID', routes.getPoll);
 
 //  Update
+app.put('/poll/:pollID', routes.updatePoll);
 app.get('/poll/:pollID/share', routes.sharePoll);
-app.get('/poll/:pollID/vote/:vote', routes.votePoll);
+app.patch('/poll/:pollID/vote/:vote', routes.votePoll);
 
 // Delete
 app.delete('/poll/:pollID', isLoggedIn, routes.deletePoll);
@@ -87,10 +88,19 @@ app.listen(app.get('port'), () => {
   debugServer(`App starting on port ${app.get('port')}`);
 });
 
-mongoose.connect(process.env.MONGODB_URI, (err) => {
-  if (err) {
-    debugDB(`Unable to connect to the mongoDB server. Error: ${err}`);
-  } else {
-    debugDB('Connection established to MongoDB');
-  }
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/voting');
+mongoose.connection.on('connected', () => {
+  debugDB('Connection established to MongoDB');
+});
+mongoose.connection.on('error', (err) => {
+  debugDB(`Unable to connect to the mongoDB server. Error: ${err}`);
+});
+mongoose.connection.on('disconnected', () => {
+  debugDB('Mongoose default connection disconnected');
+});
+process.on('SIGINT', () => {
+  mongoose.connection.close(() => {
+    console.log('Mongoose default connection disconnected through app termination');
+    process.exit(0);
+  });
 });

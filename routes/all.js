@@ -44,7 +44,7 @@ exports.createPoll = (req,
   User.findOneAndUpdate(query, { $push: { polls: poll } }, { new: true }, (err,
     user) => {
     if (err) { res.sendStatus(500); } else if (!user) { res.sendStatus(404); } else {
-      res.render('poll', { poll: user.polls.id(pollID) });
+      res.status(201).end(String(user.polls.id(pollID)._id));
     }
   });
 };
@@ -69,6 +69,30 @@ exports.getPoll = (req,
 };
 
 //  Update
+exports.updatePoll = (req,
+  res) => {
+  const pollID = req.params.pollID;
+
+  User.findOne({ 'polls._id': pollID }, (err,
+    user) => {
+    if (err) { res.sendStatus(500); } else {
+      const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
+      const target = user.polls[pollIndex];
+
+      target.name = req.query.name;
+      target.choices = [req.query['first-choice'], req.query['second-choice']];
+
+      user.save((err,
+        user) => {
+        if (err) { res.sendStatus(500); } else {
+          console.log(user.polls[pollIndex]);
+          res.sendStatus(200);
+        }
+      });
+    }
+  });
+};
+
 exports.sharePoll = (req,
   res) => {
   res.sendStatus(501);
@@ -82,7 +106,12 @@ exports.votePoll = (req,
 //  Delete
 exports.deletePoll = (req,
   res) => {
-  res.sendStatus(501);
+  const pollID = req.params.pollID;
+  User.findOneAndUpdate({ 'polls._id': pollID }, { $pull: { polls: { _id: pollID } } }, (err) => {
+    if (err) { res.sendStatus(500); } else {
+      res.sendStatus(204);
+    }
+  });
 };
 
 exports.deletePollOption = (req,
