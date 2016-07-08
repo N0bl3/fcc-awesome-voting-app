@@ -7,7 +7,7 @@ $(document).ready(() => {
   });
   $('.delete-poll').click((e) => {
     e.preventDefault();
-    const target = $(this).siblings('a').attr('href');
+    const target = $(e.target).attr('data-url');
     $.ajax({
       url: target, method: 'DELETE', success() { window.location.reload(); },
     });
