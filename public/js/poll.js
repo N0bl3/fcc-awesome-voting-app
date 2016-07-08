@@ -14,16 +14,16 @@ $(document).ready(() => {
      * TODO Implement validation
      * @type {*|boolean}
      */
-/*    let isValid = data.map((elem) => {
-      switch (elem.name) {
-        case 'name':
-        case 'first-choice':
-        case 'second-choice':
-          return /^[\d\w]+$/.test(elem.value);
-        default:
-          return false;
-      }
-    }).every((elem) => elem === true);*/
+    /*    let isValid = data.map((elem) => {
+     switch (elem.name) {
+     case 'name':
+     case 'first-choice':
+     case 'second-choice':
+     return /^[\d\w]+$/.test(elem.value);
+     default:
+     return false;
+     }
+     }).every((elem) => elem === true);*/
     const isValid = true;
     if (isValid) {
       $.ajax({
@@ -32,5 +32,14 @@ $(document).ready(() => {
         },
       });
     }
+  });
+  $('.vote-option').click((e) => {
+    e.preventDefault();
+    const vote = $(e.target).attr('data-option');
+    $.ajax({
+      url: `/poll/${pollID}/vote/${vote}`, method: 'PUT', success() {
+        window.location.reload();
+      },
+    });
   });
 });

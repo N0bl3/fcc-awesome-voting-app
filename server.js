@@ -77,7 +77,7 @@ app.get('/poll/:pollID', routes.getPoll);
 //  Update
 app.put('/poll/:pollID', routes.updatePoll);
 app.get('/poll/:pollID/share', routes.sharePoll);
-app.patch('/poll/:pollID/vote/:vote', routes.votePoll);
+app.put('/poll/:pollID/vote/:vote', routes.votePoll);
 
 // Delete
 app.delete('/poll/:pollID', isLoggedIn, routes.deletePoll);

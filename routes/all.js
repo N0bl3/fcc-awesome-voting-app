@@ -63,7 +63,7 @@ exports.getPoll = (req,
   }, (err,
     user) => {
     if (err) { res.sendStatus(500); } else if (!user) { res.sendStatus(404); } else {
-      res.render('poll', { user: req.user, poll: user.polls.id(pollID) });
+      res.render('poll', { user: req.user, poll: user.polls.id(pollID), voted: false });
     }
   });
 };
@@ -78,9 +78,11 @@ exports.updatePoll = (req,
     if (err) { res.sendStatus(500); } else {
       const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
       const target = user.polls[pollIndex];
+      const choices = Object.keys(req.query).filter((query) => /^choice-[0-9]+$/.test(query))
+        .map((query) => req.query[query]);
 
       target.name = req.query.name;
-      target.choices = [req.query['first-choice'], req.query['second-choice']];
+      target.choices = choices;
 
       user.save((err,
         user) => {
