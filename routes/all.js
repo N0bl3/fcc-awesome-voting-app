@@ -103,8 +103,8 @@ exports.sharePoll = (req,
 
 exports.votePoll = (req,
   res) => {
-  const {pollID} = req.params;
-  const {vote} = req.body;
+  const { pollID } = req.params;
+  const { vote } = req.body;
   const voter = req.user ? req.user.username : req.ip;
 
   User.findOne({ 'polls._id': pollID }, (err,
@@ -112,7 +112,7 @@ exports.votePoll = (req,
     if (err) { res.sendStatus(500); } else {
       const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
       const target = user.polls[pollIndex];
-console.log(target.voters.includes(voter));
+      console.log(target.voters.includes(voter));
       if (!target.voters.includes(voter)) {
         const newScore = target.votes[vote] + 1;
 
