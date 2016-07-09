@@ -1,41 +1,51 @@
 extends layout.pug
 
 block content
-    div.row
-        if user
+    if user
+        div.row
             div.col.s12
                 h1 Edit your poll here
             form#poll-form.col.s12
                 div.row
                     div.col.s2.offset-s2
                         button#edit-poll.btn-large.waves-effect.waves-light.green.accent-2
-                            | Edit
+                            | Validate
                     div.col.s2.offset-s4
                         button#delete-poll.btn-large.waves-effect.waves-light.red.accent-3 Delete
                 div.row
                     div.col.s12.input-field
                         input#name(type="text" name="name" placeholder="Poll theme..." value=poll.name)
                         label(for="name") Poll topic
-                    div.row
+                div#polls-display.row
                     each choice, index in poll.choices
                         - var elemId = "choice-" + index;
-                        div.col.s6.input-field
-                            input#elemId(type="text" name=elemId value=choice)
-                            label(for=elemId) Option ##{index}
-        else
+                        div.col.s12.valign-wrapper
+                            div.col.s6.input-field.option
+                                input(id=elemId type="text" name=elemId value=choice)
+                                label(for=elemId) Option ##{index}
+                            div.col.s4
+                                button.vote-option.btn.waves-effect.waves-light.red.accent-3(data-option=index) #{poll.votes[index]}
+                            div.col.s2
+                                button#remove-option.btn.btn-floating.waves-effect.waves-light.green
+                                    i.material-icons remove
+        div.row
+            div.col.s12
+                button#add-option.btn.waves-effect.waves-light.green
+                    i.material-icons add
+    else
+        div.row
             div.col.s12
                 h1 #{poll.name}
-        unless voted
-            div.row#vote-poll
-                each choice, index in poll.choices
-                    div.col.s6
-                        unless user
-                            h2 #{choice}
-                        button.vote-option.btn-large.waves-effect.waves-light.red.accent-3(data-option=index) VOTE
-    div.row#display
-        each score in poll.votes
-            div.col.s6
-                p #{score}
+        div.row#vote-poll
+            each choice, index in poll.choices
+                div.col.s6
+                    unless user
+                        h2 #{choice}
+                    button.vote-option.btn-large.waves-effect.waves-light.red.accent-3(data-option=index) VOTE
+        div.row#display
+            each score in poll.votes
+                div.col.s6
+                    p #{score}
     div.row
         - var url = "https://fcc-awesome-voting-app.herokuapp.com/poll/" + poll._id;
         div.col.s2.offset-s4

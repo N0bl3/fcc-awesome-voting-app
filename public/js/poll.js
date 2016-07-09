@@ -9,7 +9,7 @@ $(document).ready(() => {
   });
   $('#poll-form').submit((e) => {
     e.preventDefault();
-    const data = $('#poll-form').serializeArray();
+    const data = $('#poll-form').serializeArray().filter((obj) => obj.value);
     /**
      * TODO Implement validation
      * @type {*|boolean}
@@ -36,11 +36,27 @@ $(document).ready(() => {
   $('.vote-option').click((e) => {
     e.preventDefault();
     const vote = $(e.target).attr('data-option');
-    
+
     $.ajax({
       url: `/poll/${pollID}/vote/`, method: 'POST', data: { "vote": vote }, success() {
         window.location.reload();
       },
     });
   });
+  $('#add-option').click((e)=> {
+    e.preventDefault();
+    if ($.trim($('.option').last().children('input').val())) {
+      const index = $('.option').length;
+      const elemId = `choice-${index}`;
+      const element = `<div class="col s12 valign-wrapper">` +
+        `<div class='col s6 input-field option'><input id=${elemId} type='text' name=${elemId} value=''/><label for=${elemId}>Option #${index}</label></div>` +
+        `<div class="col s4"><button class="vote-option btn waves-effect waves-light red accent-3" data-option="${index}">VOTE</button></div>` +
+        `<div class="col s2"><button id="remove-option" class="btn btn-floating waves-effect waves-light green"><i class="material-icons">remove</i></button></div></div>`;
+
+      $('#polls-display').append(element);
+    }
+  });
+  $('button#remove-option').click((e)=> {
+    e.preventDefault();
+  })
 });

@@ -37,9 +37,9 @@ exports.createPoll = (req,
   const query = { username: req.user.username };
   const poll = new Poll();
   const pollID = poll._id;
-  poll.name = 'New poll';
+  poll.name = 'Blue or pink?';
   poll.choices = ['Blue', 'Pink'];
-  poll.votes = [50, 50];
+  poll.votes = [0, 0];
 
   User.findOneAndUpdate(query, { $push: { polls: poll } }, { new: true }, (err,
     user) => {
@@ -80,8 +80,8 @@ exports.updatePoll = (req,
       const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
       const target = user.polls[pollIndex];
       const choices = Object.keys(data).filter((query) => /^choice-[0-9]+$/.test(query))
-        .map((query) => data[query]);
-
+        .map((query) => data[query])
+        .filter((value) => value);
       target.name = data.name;
       target.choices = choices;
 
@@ -114,9 +114,8 @@ exports.votePoll = (req,
       const target = user.polls[pollIndex];
       const voters = target.voters;
       const votersArray = target.voters.toObject();
-
       if (!votersArray.some((value) => value === voter)) {
-        target.votes.set(vote, target.votes[vote] + 1);
+        target.votes.set(vote, target.votes[vote] ? target.votes[vote] + 1 : 1);
 
         voters.push(voter);
 
