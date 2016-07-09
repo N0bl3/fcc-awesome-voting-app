@@ -1,7 +1,10 @@
 {
   "name": "fcc-awesome-voting-app",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "description": "An awesome voting app made for FCC Back End Certificate",
+  "engines": {
+    "node": "6"
+  },
   "homepage": "",
   "author": {
     "name": "N0bl3"
