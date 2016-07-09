@@ -112,12 +112,13 @@ exports.votePoll = (req,
     if (err) { res.sendStatus(500); } else {
       const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
       const target = user.polls[pollIndex];
-      console.log(target.voters.includes(voter));
-      if (!target.voters.includes(voter)) {
-        const newScore = target.votes[vote] + 1;
+      const voters = target.voters;
+      const votersArray = target.voters.toObject();
 
-        target.votes.set(vote, newScore);
-        target.voters.push(voter);
+      if (!votersArray.some((value) => value === voter)) {
+        target.votes.set(vote, target.votes[vote] + 1);
+
+        voters.push(voter);
 
         user.save((err,
           user) => {

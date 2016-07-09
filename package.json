@@ -1,7 +1,10 @@
 {
   "name": "fcc-awesome-voting-app",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "description": "An awesome voting app made for FCC Back End Certificate",
+  "engines": {
+    "node": "6"
+  },
   "homepage": "",
   "author": {
     "name": "N0bl3"
@@ -42,7 +45,6 @@
   },
   "repository": "https://github.com/N0bl3/fcc-awesome-voting-app.git",
   "scripts": {
-    "prebuild": "npm run test",
     "build": "node utils/init.js && npm run build:css && npm run build:jade && npm run build:js",
     "build:css": "postcss --use autoprefixer public/css/*.css -d dist/public/css",
     "build:jade": "node utils/buildJade.js",

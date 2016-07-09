@@ -36,6 +36,12 @@ block content
         each score in poll.votes
             div.col.s6
                 p #{score}
+    div.row
+        - var url = "https://fcc-awesome-voting-app.herokuapp.com/poll/" + poll._id;
+        div.col.s2.offset-s4
+            a.twitter-share-button(href="https://twitter.com/intent/tweet" data-size="large" data-url=url data-text="Give your opinion : ")
+        div.col.s2
+            div.fb-share-button(data-href=url data-layout="button" data-size="large" data-mobile-iframe="true")
 
 append scripts
     script(type="text/javascript") var pollID = "#{poll._id}";

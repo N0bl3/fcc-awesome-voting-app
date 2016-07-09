@@ -5,6 +5,17 @@ head
     link(href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css")
     link(rel="stylesheet" href="../css/main.css")
+    meta(property="og:site_name" content="VoteJS")
+    meta(property="og:type" content="website")
+    if poll
+        - var url = "https://fcc-awesome-voting-app.herokuapp.com/poll/" + poll._id;
+        meta(property="og:title" content=poll.name)
+        meta(property="og:url" content=url)
+        meta(property="og:description" content=poll.name)
+    else
+        meta(property="og:title" content="VoteJS")
+        meta(property="og:url" content="https://fcc-awesome-voting-app.herokuapp.com")
+        meta(property="og:description" content="Create amazing polls and share them!")
 body.center-align
     header.navbar-fixed
         nav
@@ -32,3 +43,33 @@ body.center-align
     block scripts
         script(src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous")
         script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js")
+        script.
+            window.twttr = (function (d,
+                    s,
+                    id) {
+                var js, fjs = d.getElementsByTagName(s)[0], t = window.twttr || {};
+                if (d.getElementById(id)) return t;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+
+                t._e = [];
+                t.ready = function (f) {
+                    t._e.push(f);
+                };
+                return t;
+            }(document, "script", "twitter-wjs"));
+        div#fb-root
+        script.
+            (function (d,
+                    s,
+                    id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s);
+                js.id = id;
+                js.src =
+                        "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.6&appId=920115031449062";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
