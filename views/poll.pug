@@ -28,15 +28,14 @@ block content
         unless voted
             div.row#vote-poll
                 each choice, index in poll.choices
-                    - var elemId = "choice-" + index;
                     div.col.s6
                         unless user
                             h2 #{choice}
-                        button.vote-option.btn-large.waves-effect.waves-light.red.accent-3(data-option=elemId)
-                        VOTE
+                        button.vote-option.btn-large.waves-effect.waves-light.red.accent-3(data-option=index) VOTE
     div.row#display
-        div.col.s12
-            h1 [POLL CHART]
+        each score in poll.votes
+            div.col.s6
+                p #{score}
 
 append scripts
     script(type="text/javascript") var pollID = "#{poll._id}";

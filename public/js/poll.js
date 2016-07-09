@@ -9,7 +9,7 @@ $(document).ready(() => {
   });
   $('#poll-form').submit((e) => {
     e.preventDefault();
-    const data = $('#poll-form').serialize();
+    const data = $('#poll-form').serializeArray();
     /**
      * TODO Implement validation
      * @type {*|boolean}
@@ -27,7 +27,7 @@ $(document).ready(() => {
     const isValid = true;
     if (isValid) {
       $.ajax({
-        url: `/poll/${pollID}?${data}`, method: 'PUT', success() {
+        url: `/poll/${pollID}`, method: 'POST', data, success() {
           window.location.reload();
         },
       });
@@ -36,8 +36,9 @@ $(document).ready(() => {
   $('.vote-option').click((e) => {
     e.preventDefault();
     const vote = $(e.target).attr('data-option');
+    
     $.ajax({
-      url: `/poll/${pollID}/vote/${vote}`, method: 'PUT', success() {
+      url: `/poll/${pollID}/vote/`, method: 'POST', data: { "vote": vote }, success() {
         window.location.reload();
       },
     });

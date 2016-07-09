@@ -72,16 +72,17 @@ exports.getPoll = (req,
 exports.updatePoll = (req,
   res) => {
   const pollID = req.params.pollID;
+  const data = req.body;
 
   User.findOne({ 'polls._id': pollID }, (err,
     user) => {
     if (err) { res.sendStatus(500); } else {
       const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
       const target = user.polls[pollIndex];
-      const choices = Object.keys(req.query).filter((query) => /^choice-[0-9]+$/.test(query))
-        .map((query) => req.query[query]);
+      const choices = Object.keys(data).filter((query) => /^choice-[0-9]+$/.test(query))
+        .map((query) => data[query]);
 
-      target.name = req.query.name;
+      target.name = data.name;
       target.choices = choices;
 
       user.save((err,
@@ -102,7 +103,27 @@ exports.sharePoll = (req,
 
 exports.votePoll = (req,
   res) => {
-  res.sendStatus(501);
+  const pollID = req.params.pollID;
+  const vote = Number(req.body.vote);
+
+  User.findOne({ 'polls._id': pollID }, (err,
+    user) => {
+    if (err) { res.sendStatus(500); } else {
+      const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
+      const target = user.polls[pollIndex];
+      const newScore = target.votes[vote] + 1;
+
+      target.votes.set(vote, newScore);
+
+      user.save((err,
+        user) => {
+        if (err) { res.sendStatus(500); } else {
+          console.log(user.polls[pollIndex]);
+          res.sendStatus(200);
+        }
+      });
+    }
+  });
 };
 
 //  Delete

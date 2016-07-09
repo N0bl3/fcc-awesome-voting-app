@@ -68,7 +68,7 @@ module.exports = function (passport) {
         const poll = new Poll.model();
         poll.name = 'New poll';
         poll.choices = ['Blues', 'Reds'];
-        poll.votes = [50, 50];
+        poll.votes = [0, 0];
 
         newUser.polls.push(poll);
 
