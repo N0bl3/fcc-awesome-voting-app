@@ -113,9 +113,9 @@ exports.votePoll = (req,
       const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
       const target = user.polls[pollIndex];
       const voters = target.voters;
-      let votersArray = target.voters.toObject();
+      const votersArray = target.voters.toObject();
 
-      if (!votersArray.includes(voter)) {
+      if (!votersArray.some((value) => value === voter)) {
         const newScore = target.votes[vote] + 1;
         target.votes.set(vote, newScore);
         target.voters.push(voter);
