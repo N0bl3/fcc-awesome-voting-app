@@ -1,6 +1,6 @@
 {
   "name": "fcc-awesome-voting-app",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "An awesome voting app made for FCC Back End Certificate",
   "homepage": "",
   "author": {
@@ -52,7 +52,6 @@
     "lint": "npm run lint:js && npm run lint:json",
     "lint:js": "eslint */**.js",
     "lint:json": "jsonlint -q package.json",
-    "prestart": "npm run build",
     "start:dev": "set DEBUG=* NODE_ENV=development && node server.js",
     "start": "node dist/server.js",
     "prepublish": "npm run build",
