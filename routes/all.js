@@ -63,7 +63,7 @@ exports.getPoll = (req,
   }, (err,
     user) => {
     if (err) { res.sendStatus(500); } else if (!user) { res.sendStatus(404); } else {
-      res.render('poll', { user: req.user, poll: user.polls.id(pollID) });
+      res.render('poll', { user: req.user, poll: user.polls.id(pollID), voted: false });
     }
   });
 };
@@ -72,15 +72,18 @@ exports.getPoll = (req,
 exports.updatePoll = (req,
   res) => {
   const pollID = req.params.pollID;
+  const data = req.body;
 
   User.findOne({ 'polls._id': pollID }, (err,
     user) => {
     if (err) { res.sendStatus(500); } else {
       const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
       const target = user.polls[pollIndex];
+      const choices = Object.keys(data).filter((query) => /^choice-[0-9]+$/.test(query))
+        .map((query) => data[query]);
 
-      target.name = req.query.name;
-      target.choices = [req.query['first-choice'], req.query['second-choice']];
+      target.name = data.name;
+      target.choices = choices;
 
       user.save((err,
         user) => {
@@ -100,7 +103,34 @@ exports.sharePoll = (req,
 
 exports.votePoll = (req,
   res) => {
-  res.sendStatus(501);
+  const { pollID } = req.params;
+  const { vote } = req.body;
+  const voter = req.user ? req.user.username : req.ip;
+
+  User.findOne({ 'polls._id': pollID }, (err,
+    user) => {
+    if (err) { res.sendStatus(500); } else {
+      const pollIndex = user.polls.findIndex((poll) => String(poll._id) === pollID);
+      const target = user.polls[pollIndex];
+      console.log(target.voters.includes(voter));
+      if (!target.voters.includes(voter)) {
+        const newScore = target.votes[vote] + 1;
+
+        target.votes.set(vote, newScore);
+        target.voters.push(voter);
+
+        user.save((err,
+          user) => {
+          if (err) { res.sendStatus(500); } else {
+            console.log(user.polls[pollIndex]);
+            res.sendStatus(200);
+          }
+        });
+      } else {
+        res.sendStatus(403);
+      }
+    }
+  });
 };
 
 //  Delete

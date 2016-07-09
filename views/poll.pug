@@ -3,30 +3,39 @@ extends layout.pug
 block content
     div.row
         if user
-            div.s4
+            div.col.s12
                 h1 Edit your poll here
-            form.col.s8#poll-form
+            form#poll-form.col.s12
+                div.row
+                    div.col.s2.offset-s2
+                        button#edit-poll.btn-large.waves-effect.waves-light.green.accent-2
+                            | Edit
+                    div.col.s2.offset-s4
+                        button#delete-poll.btn-large.waves-effect.waves-light.red.accent-3 Delete
                 div.row
                     div.col.s12.input-field
                         input#name(type="text" name="name" placeholder="Poll theme..." value=poll.name)
                         label(for="name") Poll topic
-                div.row
-                    div.col.s6.input-field
-                        input#first-choice(type="text" name="first-choice" placeholder="First choice." +
-                        ".." value=poll.choices[0])
-                        label(for="first-choice") Option #1
-                    div.col.s6.input-field
-                        input#second-choice(type="text" name="second-choice" placeholder="Second " +
-                        "choice..." value=poll.choices[1])
-                        label(for="second-choice") Option #2
-                div.row
-                    div.col.s2.offset-s8
-                        button#edit-poll(type="submit").btn-large.waves-effect.waves-light.green.accent-2
-                            | Edit
-                    div.col.s2
-                        button#delete-poll.btn-large.waves-effect.waves-light.red.accent-3 Delete
+                    div.row
+                    each choice, index in poll.choices
+                        - var elemId = "choice-" + index;
+                        div.col.s6.input-field
+                            input#elemId(type="text" name=elemId value=choice)
+                            label(for=elemId) Option ##{index}
         else
-            div.s12 POLL
+            div.col.s12
+                h1 #{poll.name}
+        unless voted
+            div.row#vote-poll
+                each choice, index in poll.choices
+                    div.col.s6
+                        unless user
+                            h2 #{choice}
+                        button.vote-option.btn-large.waves-effect.waves-light.red.accent-3(data-option=index) VOTE
+    div.row#display
+        each score in poll.votes
+            div.col.s6
+                p #{score}
 
 append scripts
     script(type="text/javascript") var pollID = "#{poll._id}";
