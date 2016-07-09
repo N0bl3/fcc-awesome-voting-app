@@ -116,9 +116,8 @@ exports.votePoll = (req,
       const votersArray = target.voters.toObject();
 
       if (!votersArray.some((value) => value === voter)) {
-        const newScore = target.votes[vote] + 1;
-        target.votes.set(vote, newScore);
-        target.voters.push(voter);
+
+        target.votes.set(vote, target.votes[vote] + 1);
 
         voters.push(voter);
 
