@@ -69,19 +69,16 @@ app.get('/logout', (req,
 
 // Create
 app.post('/poll', isLoggedIn, routes.createPoll);
-app.post('/poll/:pollID/option/:option', isLoggedIn, routes.createPollOption);
 
 //  Read
 app.get('/poll/:pollID', routes.getPoll);
 
 //  Update
-app.post('/poll/:pollID', routes.updatePoll);
-app.get('/poll/:pollID/share', routes.sharePoll);
+app.post('/poll/:pollID', isLoggedIn, routes.updatePoll);
 app.post('/poll/:pollID/vote', routes.votePoll);
 
 // Delete
 app.delete('/poll/:pollID', isLoggedIn, routes.deletePoll);
-app.delete('/poll/:pollID/option/:option', isLoggedIn, routes.deletePollOption);
 
 // Server operations
 app.listen(app.get('port'), () => {

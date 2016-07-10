@@ -5,6 +5,8 @@
   },
   "globals": {
     "polls": false,
-    "pollID": false
+    "poll": false,
+    "Chart": false,
+    "myChart": false
   }
 }
