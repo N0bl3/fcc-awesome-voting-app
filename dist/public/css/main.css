@@ -1,0 +1,28 @@
+.header, .footer {
+    color: #FFF
+}
+
+.header {
+    min-height: 80px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: #107070;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #107070;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+a.brand-logo {
+    color: #FFF;
+}

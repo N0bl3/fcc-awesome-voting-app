@@ -1,0 +1,16 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "rules": {
+    "no-console": 1,
+    "no-shadow": 1,
+    "no-else-return": 1,
+    "consistent-return": 1,
+    "new-cap": 1,
+    "no-underscore-dangle": 1
+  }
+}

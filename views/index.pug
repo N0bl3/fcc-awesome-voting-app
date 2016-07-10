@@ -1,0 +1,38 @@
+extends layout.pug
+
+block content
+    div.row
+        div.col.s12
+            if user
+                h1.center-align Welcome #{user.username} !
+                table.centered.highlight.dashboard
+                    thead
+                        tr
+                            th Dashboard
+                    tbody
+                        tr
+                            td
+                                a#addPoll(href="#") Add poll
+                        if user.polls.length
+                            each poll in user.polls
+                                tr
+                                    td
+                                        - var pollURL = '/poll/' + poll._id;
+                                        i.delete-poll.material-icons(data-url=pollURL) delete
+                                        a.poll(href=pollURL) #{poll.name}
+            else
+                h1.center-align Welcome !
+                h2.center-align Log In to make polls
+                p.center-align
+                    a(href="/login").waves-effect.waves-light.btn-large.login Log In
+                        i.material-icons.left settings_power
+                        i.material-icons.right settings_power
+                    br
+                    | or
+                    br
+                    a(href="/register").waves-effect.waves-light.btn-large.login Register
+                        i.material-icons.left settings_power
+                        i.material-icons.right settings_power
+
+append scripts
+    script(src="../js/index.js")
