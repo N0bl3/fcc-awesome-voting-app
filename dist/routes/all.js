@@ -129,8 +129,8 @@ exports.votePoll = function (req, res) {
         var voters = target.voters;
         var votersArray = target.voters.toObject();
         if (!votersArray.some(function (value) {
-            return value === voter;
-          })) {
+          return value === voter;
+        })) {
           target.votes.set(vote, target.votes[vote] ? target.votes[vote] + 1 : 1);
 
           voters.push(voter);
@@ -154,15 +154,13 @@ exports.votePoll = function (req, res) {
 //  Delete
 exports.deletePoll = function (req, res) {
   var pollID = req.params.pollID;
-  User.findOneAndUpdate({ 'polls._id': pollID },
-    { $pull: { polls: { _id: pollID } } },
-    function (err) {
-      if (err) {
-        res.sendStatus(500);
-      } else {
-        res.sendStatus(204);
-      }
-    });
+  User.findOneAndUpdate({ 'polls._id': pollID }, { $pull: { polls: { _id: pollID } } }, function (err) {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(204);
+    }
+  });
 };
 
 exports.deletePollOption = function (req, res) {
