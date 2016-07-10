@@ -1,0 +1,1 @@
+"use strict";$(document).ready(function(){$("#addPoll").click(function(t){t.preventDefault(),$.post("/poll").done(function(t){window.location.replace("/poll/"+t)})}),$(".delete-poll").click(function(t){t.preventDefault();var o=$(t.target).attr("data-url");$.ajax({url:o,method:"DELETE",success:function(){window.location.reload()}})})});
