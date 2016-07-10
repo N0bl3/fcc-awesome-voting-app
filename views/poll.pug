@@ -1,7 +1,7 @@
 extends layout.pug
 
 block content
-    if user
+    if isAuthor
         div.row
             div.col.s12
                 h1 Edit your poll here
@@ -39,13 +39,11 @@ block content
         div.row#vote-poll
             each choice, index in poll.choices
                 div.col.s6
-                    unless user
-                        h2 #{choice}
-                    button.vote-option.btn-large.waves-effect.waves-light.red.accent-3(data-option=index) VOTE
-        div.row#display
-            each score in poll.votes
-                div.col.s6
-                    p #{score}
+                    h2 #{choice}
+                    button.vote-option.btn-large.waves-effect.waves-light.red.accent-3(data-option=index) #{poll.votes[index]}
+    div.row
+        div.col.s12
+            canvas#chart
     div.row
         - var url = "https://fcc-awesome-voting-app.herokuapp.com/poll/" + poll._id;
         div.col.s2.offset-s4
@@ -54,5 +52,7 @@ block content
             div.fb-share-button(data-href=url data-layout="button" data-size="large" data-mobile-iframe="true")
 
 append scripts
-    script(type="text/javascript") var pollID = "#{poll._id}";
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.js")
+    script(type="text/javascript").
+        var poll = !{JSON.stringify(poll)};
     script(src="../js/poll.js")
