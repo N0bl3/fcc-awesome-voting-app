@@ -59,7 +59,9 @@ exports.getPoll = (req, res) => {
     } else {
       console.log(user.username, req.user.username);
       res.render('poll', {
-        user: req.user, poll: user.polls.id(pollID), isAuthor: user.username === req.user.username,
+        user: req.user,
+        poll: user.polls.id(pollID),
+        isAuthor: req.user ? user.username === req.user.username : false,
       });
     }
   });
