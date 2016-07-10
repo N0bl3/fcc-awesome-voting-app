@@ -2,7 +2,9 @@
 
 $(document).ready(function () {
   function randomColor() {
-    var colorSet = ['#e57373', '#f06292', '#ba68c8', '#9575cd', '#7986cb', '#64b5f6', '#4fc3f7', '#4dd0e1', '#4db6ac', '#81c784', '#aed581', '#dce775', '#fff176', '#ffd54f', '#ffb74d', '#ff8a65', '#a1887f', '#90a4ae'];
+    var colorSet = ['#e57373', '#f06292', '#ba68c8', '#9575cd', '#7986cb', '#64b5f6', '#4fc3f7',
+      '#4dd0e1', '#4db6ac', '#81c784', '#aed581', '#dce775', '#fff176', '#ffd54f', '#ffb74d',
+      '#ff8a65', '#a1887f', '#90a4ae'];
     return colorSet[Math.floor(Math.random() * colorSet.length)];
   }
 
@@ -51,7 +53,10 @@ $(document).ready(function () {
     var vote = $(e.target).attr('data-option');
 
     $.ajax({
-      url: '/poll/' + pollID + '/vote/', method: 'POST', data: { vote: vote }, success: function success() {
+      url: '/poll/' + pollID + '/vote/',
+      method: 'POST',
+      data: { vote: vote },
+      success: function success() {
         window.location.reload();
       }
     });

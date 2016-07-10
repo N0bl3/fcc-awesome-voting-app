@@ -5,6 +5,5 @@ const pollSchema = mongoose.Schema({
 });
 
 module.exports = {
-  model: mongoose.model('Poll', pollSchema),
-  schema: pollSchema,
+  model: mongoose.model('Poll', pollSchema), schema: pollSchema,
 };

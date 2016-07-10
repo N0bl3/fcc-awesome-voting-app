@@ -9,7 +9,9 @@ $(document).ready(() => {
     e.preventDefault();
     const target = $(e.target).attr('data-url');
     $.ajax({
-      url: target, method: 'DELETE', success() { window.location.reload(); },
+      url: target, method: 'DELETE', success() {
+        window.location.reload();
+      },
     });
   });
 });

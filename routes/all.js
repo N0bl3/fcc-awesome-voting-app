@@ -57,11 +57,10 @@ exports.getPoll = (req, res) => {
     } else if (!user) {
       res.sendStatus(404);
     } else {
-      console.log(user.username, req.user.username);
+      const isAuthor = req.user ? user.username === req.user.username : false;
+
       res.render('poll', {
-        user: req.user,
-        poll: user.polls.id(pollID),
-        isAuthor: req.user ? user.username === req.user.username : false,
+        user: req.user, poll: user.polls.id(pollID), isAuthor,
       });
     }
   });

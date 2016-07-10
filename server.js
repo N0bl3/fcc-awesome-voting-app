@@ -35,9 +35,7 @@ app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-function isLoggedIn(req,
-  res,
-  next) {
+function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -60,8 +58,7 @@ app.post('/register', passport.authenticate('register', {
   successRedirect: '/', failureRedirect: '/register', failureFlash: true,
 }));
 
-app.get('/logout', (req,
-  res) => {
+app.get('/logout', (req, res) => {
   debugRoute('Logging Out');
   req.logout();
   res.redirect('/');
